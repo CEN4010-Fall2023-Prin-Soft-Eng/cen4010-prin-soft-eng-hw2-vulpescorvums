@@ -165,6 +165,42 @@ function readFiles(files, arr, res) {
     }
   });
 }
+
+/**
+ * @swagger
+ * /students/{last_name}:
+ *   get:
+ *     summary: Get a student by last name.
+ *     description: Use this endpoint to retrieve a student based on their last name.
+ *     parameters:
+ *       - name: last_name
+ *         description: Student's last name
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success. The student object has been retrieved.
+ *       404:
+ *         description: Error. The requested resource was not found.
+ */
+
+app.get('/students/: last_name', function (req, res) {
+  var last_name = req.params.last_name
+  var obj = {};
+  var arr = [];
+
+  glob("students/*.json", null, function (err, files) {
+    if (err) {
+      return res.status(500).send({ "message": "error - internal server error" });
+    }
+    console.log("list of students to be read", files)
+
+    readFiles(files, [], res);
+  });
+});
+
 /**
  * @swagger
  * /students:
